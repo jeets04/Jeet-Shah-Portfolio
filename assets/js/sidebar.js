@@ -68,13 +68,13 @@
 		$sidebar_inner = $sidebar.children('.inner');
 
 	// Inactive by default on <= large.
-	// breakpoints.on('<=large', function () {
-	// 	$sidebar.addClass('inactive');
-	// });
+	breakpoints.on('<=large', function () {
+		$sidebar.addClass('inactive');
+	});
 
-	// breakpoints.on('>large', function () {
-	// 	$sidebar.removeClass('inactive');
-	// });
+	breakpoints.on('>large', function () {
+		$sidebar.removeClass('inactive');
+	});
 
 	// Hack: Workaround for Chrome/Android scrollbar position bug.
 	if (browser.os == 'android'
@@ -82,7 +82,7 @@
 		$('<style>#sidebar .inner::-webkit-scrollbar { display: none; }</style>')
 			.appendTo($head);
 
-	$sidebar.addClass('inactive');
+	// $sidebar.addClass('inactive');
 
 	// Toggle.
 	$('<a href="#sidebar" class="toggle" style="margin-top: 23px;">Toggle</a>')
