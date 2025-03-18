@@ -2,7 +2,8 @@
 
 	var $window = $(window),
 		$head = $('head'),
-		$body = $('body');
+		$body = $('body'),
+		$preloader = $('.preloader');
 
 	// Breakpoints.
 	breakpoints({
@@ -16,13 +17,18 @@
 		'small-to-xlarge': '(min-width: 481px) and (max-width: 1680px)'
 	});
 
-	// Stops animations/transitions until the page has ...
-
-	// ... loaded.
+	// Handle preloader
 	$window.on('load', function () {
-		window.setTimeout(function () {
-			$body.removeClass('is-preload');
-		}, 100);
+		// Remove preload class from body
+		$body.removeClass('is-preload');
+		
+		// Fade out preloader
+		setTimeout(function() {
+			$preloader.addClass('fade-out');
+			setTimeout(function() {
+				$preloader.hide();
+			}, 500);
+		}, 500);
 	});
 
 	// ... stopped resizing.
@@ -67,31 +73,44 @@
 	var $sidebar = $('#sidebar'),
 		$sidebar_inner = $sidebar.children('.inner');
 
-	// Inactive by default on <= large.
-	// breakpoints.on('<=large', function () {
-	// 	$sidebar.addClass('inactive');
-	// });
+	// Initialize sidebar based on page type
+	if ($body.hasClass('is-homepage')) {
+		// On homepage, sidebar starts inactive
+		$sidebar.addClass('inactive');
+		
+		// Add toggle button
+		$('<a href="#sidebar" class="toggle" style="margin-top: 23px;">Toggle</a>')
+			.appendTo($sidebar)
+			.on('click', function (event) {
+				event.preventDefault();
+				event.stopPropagation();
+				$sidebar.toggleClass('inactive');
+			});
+	} else {
+		// On other pages, sidebar is always visible on large screens
+		if (breakpoints.active('>large')) {
+			$sidebar.removeClass('inactive');
+		}
+	}
 
-	// breakpoints.on('>large', function () {
-	// 	$sidebar.removeClass('inactive');
-	// });
+	// Handle sidebar on window resize
+	breakpoints.on('<=large', function () {
+		if (!$body.hasClass('is-homepage')) {
+			$sidebar.addClass('inactive');
+		}
+	});
+
+	breakpoints.on('>large', function () {
+		if (!$body.hasClass('is-homepage')) {
+			$sidebar.removeClass('inactive');
+		}
+	});
 
 	// Hack: Workaround for Chrome/Android scrollbar position bug.
 	if (browser.os == 'android'
 		&& browser.name == 'chrome')
 		$('<style>#sidebar .inner::-webkit-scrollbar { display: none; }</style>')
 			.appendTo($head);
-
-	$sidebar.addClass('inactive');
-
-	// Toggle.
-	$('<a href="#sidebar" class="toggle" style="margin-top: 23px;">Toggle</a>')
-		.appendTo($sidebar)
-		.on('click', function (event) {
-			event.preventDefault();
-			event.stopPropagation();
-			$sidebar.toggleClass('inactive');
-		});
 
 	// Events.
 
