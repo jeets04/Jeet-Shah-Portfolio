@@ -1,7 +1,5 @@
 # Jeet Shah - Professional Portfolio Website
 
-![Portfolio Preview](images/Jeet1.jpg)
-
 A modern, responsive portfolio website showcasing my professional journey, projects, and achievements. Built with a focus on performance, accessibility, and user experience.
 
 ## 🌟 Features
